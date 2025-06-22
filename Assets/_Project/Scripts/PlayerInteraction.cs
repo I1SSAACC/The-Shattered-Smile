@@ -6,7 +6,10 @@ namespace MiktoGames
     {
         [SerializeField] private float interactionDistance = 3f;
         private Camera playerCamera;
-        private HexagonPuzzleController puzzleController; // Имя класса должно совпадать!
+
+        // Используем переменные для кеширования найденных компонентов
+        private HexagonPuzzleController puzzleController;
+        private LockerController lockerController;
 
         private void Awake()
         {
@@ -20,10 +23,18 @@ namespace MiktoGames
             // Рейкаст из центра экрана.
             Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
             if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance))
+            {
+                // Можно попытаться получить нужные компоненты с объекта (или его родителя)
                 puzzleController = hit.collider.GetComponentInParent<HexagonPuzzleController>();
+                lockerController = hit.collider.GetComponentInParent<LockerController>();
+            }
             else
+            {
                 puzzleController = null;
+                lockerController = null;
+            }
 
+            // Если обнаружен головоломочный объект – обрабатываем его логику.
             if (puzzleController != null && puzzleController.IsInteractable)
             {
                 if (Input.GetKeyDown(KeyCode.E))
@@ -33,13 +44,20 @@ namespace MiktoGames
                 }
                 if (Input.GetKey(KeyCode.E))
                 {
-                    puzzleController.SetKeyHeld(true);
                     puzzleController.UpdateRotation(Time.deltaTime);
                 }
                 if (Input.GetKeyUp(KeyCode.E))
                 {
                     puzzleController.SetKeyHeld(false);
                     puzzleController.EndRotation();
+                }
+            }
+            // Если обнаружен локер, можно вызывать его метод переключения
+            else if (lockerController != null && lockerController.IsInteractable)
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    lockerController.ToggleLocker();
                 }
             }
         }
