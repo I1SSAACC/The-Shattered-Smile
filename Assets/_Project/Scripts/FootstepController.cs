@@ -48,14 +48,13 @@ namespace MiktoGames
         /// </summary>
         private bool IsGroundWood()
         {
-            RaycastHit hit;
             Vector3 origin = _groundCheck.position;
             Vector3 direction = Vector3.down;
 
             // Для отладки: рисуем луч
             Debug.DrawRay(origin, direction * _materialCheckDistance, Color.red, 0.5f);
 
-            if (Physics.Raycast(origin, direction, out hit, _materialCheckDistance, _groundMaterialMask))
+            if (Physics.Raycast(origin, direction, out RaycastHit hit, _materialCheckDistance, _groundMaterialMask))
             {
                 // Убедимся, что hit.collider существует и имеет нужный тег.
                 if (hit.collider != null)

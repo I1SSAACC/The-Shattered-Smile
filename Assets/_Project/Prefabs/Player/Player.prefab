@@ -349,12 +349,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1172159035235484606}
   - component: {fileID: 114409654863914566}
+  - component: {fileID: 3250208951766334863}
   - component: {fileID: 8403193533586442931}
   - component: {fileID: 2863264213549521115}
   - component: {fileID: 8693810721681009742}
   - component: {fileID: 7449898212710868227}
   - component: {fileID: 5327331378509011910}
-  - component: {fileID: 3250208951766334863}
   - component: {fileID: 385826257093578217}
   - component: {fileID: 3604057579775968076}
   m_Layer: 3
@@ -408,6 +408,22 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &3250208951766334863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6390410254111685510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2922308556bc98e4898cb3309250e781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movement: {fileID: 7449898212710868227}
+  _mouseLook: {fileID: 2863264213549521115}
+  _headBobbing: {fileID: 8693810721681009742}
+  _footstepController: {fileID: 5327331378509011910}
 --- !u!114 &8403193533586442931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,7 +436,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c53b38942a39ec741907631462916f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionDistance: 3
+  _player: {fileID: 3250208951766334863}
+  interactionDistance: 3
 --- !u!114 &2863264213549521115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,22 +575,6 @@ MonoBehaviour:
   _groundMaterialMask:
     serializedVersion: 2
     m_Bits: 1
---- !u!114 &3250208951766334863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6390410254111685510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2922308556bc98e4898cb3309250e781, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _movement: {fileID: 7449898212710868227}
-  _mouseLook: {fileID: 2863264213549521115}
-  _headBobbing: {fileID: 8693810721681009742}
-  _footstepController: {fileID: 5327331378509011910}
 --- !u!114 &385826257093578217
 MonoBehaviour:
   m_ObjectHideFlags: 0

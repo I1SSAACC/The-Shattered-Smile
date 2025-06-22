@@ -37,6 +37,9 @@ public class FlashlightController : MonoBehaviour
 
     // Флаг активности фонарика.
     private bool isOn = false;
+    private bool _isOnInteractable;
+    private bool _isInteractable = true;
+
     // Ссылки на корутины
     private Coroutine flickerCoroutine;
     private Coroutine toggleCoroutine;
@@ -63,11 +66,31 @@ public class FlashlightController : MonoBehaviour
 
     private void Update()
     {
+        if (_isInteractable == false)
+            return;
+
         // Переключаем фонарик по нажатию заданной клавиши.
         if (Input.GetKeyDown(toggleKey))
         {
             ToggleFlashlight();
         }
+    }
+
+    public void DisableInteractable()
+    {
+        _isOnInteractable = isOn;
+        _isInteractable = false;
+
+        if (isOn)
+            Disable();
+    }
+
+    public void EnableInteractable()
+    {
+        _isInteractable = true;
+
+        if (_isOnInteractable)
+            Enable();
     }
 
     private void ToggleFlashlight()
@@ -82,27 +105,32 @@ public class FlashlightController : MonoBehaviour
         }
 
         if (isOn)
-        {
-            // Включение: включаем Light компонент, устанавливаем интенсивность в 0.
-            flashlight.enabled = true;
-            flashlight.intensity = 0f;
-
-            // Проигрываем звук включения (если настроен).
-            if (audioSource != null && toggleOnSound != null)
-                audioSource.PlayOneShot(toggleOnSound);
-
-            // Запускаем плавное включение.
-            toggleCoroutine = StartCoroutine(SmoothFadeIn());
-        }
+            Enable();
         else
-        {
-            // Выключение: проигрываем звук отключения (если настроен).
-            if (audioSource != null && toggleOffSound != null)
-                audioSource.PlayOneShot(toggleOffSound);
+            Disable();
+    }
 
-            // Запускаем плавное выключение.
-            toggleCoroutine = StartCoroutine(SmoothFadeOut());
-        }
+    private void Enable()
+    {
+        flashlight.enabled = true;
+        flashlight.intensity = 0f;
+
+        // Проигрываем звук включения (если настроен).
+        if (audioSource != null && toggleOnSound != null)
+            audioSource.PlayOneShot(toggleOnSound);
+
+        // Запускаем плавное включение.
+        toggleCoroutine = StartCoroutine(SmoothFadeIn());
+    }
+
+    private void Disable()
+    {
+        // Выключение: проигрываем звук отключения (если настроен).
+        if (audioSource != null && toggleOffSound != null)
+            audioSource.PlayOneShot(toggleOffSound);
+
+        // Запускаем плавное выключение.
+        toggleCoroutine = StartCoroutine(SmoothFadeOut());
     }
 
     private IEnumerator SmoothFadeIn()
@@ -144,6 +172,7 @@ public class FlashlightController : MonoBehaviour
             flashlight.intensity = Mathf.Lerp(startIntensity, 0f, elapsed / smoothToggleDuration);
             yield return null;
         }
+
         flashlight.intensity = 0f;
         flashlight.enabled = false;
     }

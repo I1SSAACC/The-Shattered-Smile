@@ -46,6 +46,7 @@ namespace MiktoGames
         [HideInInspector] private bool _isGrounded;
         [HideInInspector] private bool _isSprinting;
         [HideInInspector] private bool _isCrouching;
+
         [HideInInspector] private float _coyoteTimer = 0f;
         private bool _hasJumped = false;
         private bool _inFall = false;
@@ -117,7 +118,8 @@ namespace MiktoGames
                 _inFall = true;
             }
 
-            float currentSpeed = 0f;
+            float currentSpeed;
+
             if (_isCrouching)
             {
                 currentSpeed = (isShiftPressed && _canSprint)
@@ -133,7 +135,7 @@ namespace MiktoGames
                 currentSpeed = _walkSpeed;
             }
 
-            Vector3 direction = new Vector3(_moveInput.x, 0f, _moveInput.y);
+            Vector3 direction = new(_moveInput.x, 0f, _moveInput.y);
             Vector3 moveVector = transform.TransformDirection(direction) * currentSpeed;
             moveVector = Vector3.ClampMagnitude(moveVector, currentSpeed);
 
@@ -180,8 +182,14 @@ namespace MiktoGames
 
             _wasGrounded = _isGrounded;
         }
-
         #endregion
+
+        public void Disable()
+        {
+            this.enabled = false;
+            _isSprinting = false;
+            _moveInput = Vector2.zero;
+        }
 
         #region Private Methods
 
@@ -193,8 +201,8 @@ namespace MiktoGames
             Vector3 moveDir = transform.TransformDirection(new Vector3(_moveInput.x, 0f, _moveInput.y)).normalized;
             // Исправление: рассчитываем точку начала Raycast с учётом направления движения
             Vector3 origin = transform.position + moveDir * _characterController.radius + Vector3.up * (_characterController.height * 0.5f);
-            RaycastHit hit;
-            if (Physics.Raycast(origin, moveDir, out hit, _obstacleCheckDistance))
+
+            if (Physics.Raycast(origin, moveDir, out RaycastHit hit, _obstacleCheckDistance))
             {
                 float angle = Vector3.Angle(moveDir, -hit.normal);
                 if (angle < _obstacleAngleThreshold && hit.distance < _obstacleCheckDistance)

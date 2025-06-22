@@ -4,12 +4,13 @@ namespace MiktoGames
 {
     public class PlayerInteraction : MonoBehaviour
     {
+        [SerializeField] private Player _player;
         [SerializeField] private float interactionDistance = 3f;
         private Camera playerCamera;
 
         // Используем переменные для кеширования найденных компонентов
         private HexagonPuzzleController puzzleController;
-        private LockerController lockerController;
+        private Locker lockerController;
 
         private void Awake()
         {
@@ -26,7 +27,7 @@ namespace MiktoGames
             {
                 // Можно попытаться получить нужные компоненты с объекта (или его родителя)
                 puzzleController = hit.collider.GetComponentInParent<HexagonPuzzleController>();
-                lockerController = hit.collider.GetComponentInParent<LockerController>();
+                lockerController = hit.collider.GetComponentInParent<Locker>();
             }
             else
             {
@@ -53,11 +54,11 @@ namespace MiktoGames
                 }
             }
             // Если обнаружен локер, можно вызывать его метод переключения
-            else if (lockerController != null && lockerController.IsInteractable)
+            else if (lockerController != null)
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    lockerController.ToggleLocker();
+                    lockerController.ToggleLocker(_player);
                 }
             }
         }
