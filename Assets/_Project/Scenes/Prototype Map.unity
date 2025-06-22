@@ -256,6 +256,11 @@ CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 121008721278881445, guid: f88b1807c888c094d891890ef25695c5, type: 3}
   m_PrefabInstance: {fileID: 3771044982273709473}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1431664313 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7733258178806101093, guid: eff221103b1ef32498eaa4f6682aacb8, type: 3}
+  m_PrefabInstance: {fileID: 7920152353023487951}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1787618347 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6106789726417648690, guid: 6a8317775c36ca940b664166af74afd3, type: 3}
@@ -329,6 +334,10 @@ PrefabInstance:
       propertyPath: WaitToMove
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 8374152591759117019, guid: 6a8317775c36ca940b664166af74afd3, type: 3}
+      propertyPath: PlayerAudio
+      value: 
+      objectReference: {fileID: 1431664313}
     - target: {fileID: 8374152591759117019, guid: 6a8317775c36ca940b664166af74afd3, type: 3}
       propertyPath: exitPosition
       value: 
