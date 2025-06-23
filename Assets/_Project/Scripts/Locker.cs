@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using MiktoGames;
 using UnityEngine;
@@ -9,6 +8,9 @@ public class Locker : MonoBehaviour
     [SerializeField] private float _moveDuration;
     [SerializeField] private float _fastMoveDuration;
     [SerializeField] private float _timeWaitToMove;
+    [SerializeField] private Vector2 _verticalLooksAround;
+    [SerializeField] private Vector2 _horizontalLooksAround;
+    [SerializeField] private float _looksAroundSensitivity;
 
     public Transform _entryStartTarget;
     public Transform _entryTarget;
@@ -39,6 +41,8 @@ public class Locker : MonoBehaviour
 
         yield return StartCoroutine(Utils.MovePlayer(player.transform, _entryTarget, _moveDuration));
 
+        player.SetTempParamsMouseLook(_verticalLooksAround, _horizontalLooksAround, _looksAroundSensitivity);
+        player.EnableMouseLook();
         player.DisableFlashlight();
         _lockerAnimator.PlayClose();
         player.CameraTransform.localRotation = Quaternion.identity;
@@ -48,6 +52,8 @@ public class Locker : MonoBehaviour
     private IEnumerator ExitingLocker(Player player)
     {
         player.SetHiddenStatus(false);
+        player.DisableMouseLook();
+        player.SetDefaultMouseLook();
         _lockerAnimator.PlayOpen();
 
         yield return _waitToMove;

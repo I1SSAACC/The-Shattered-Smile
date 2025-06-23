@@ -26,15 +26,21 @@ namespace MiktoGames
         {
             EnableHeadBobbing();
             EnablePlayerMovement();
-            EnableMouseLock();
+            EnableMouseLook();
         }
 
         public void DisableControl()
         {
             DisableHeadBobbing();
             DisablePlayerMovement();
-            DisableMouseLock();
+            DisableMouseLook();
         }
+
+        public void SetTempParamsMouseLook(Vector2 verticalLimis, Vector2 horizontalLimits, float multiplierSensitivity) =>
+            _mouseLook.SetTempParams(verticalLimis, horizontalLimits, multiplierSensitivity);
+
+        public void SetDefaultMouseLook() =>
+             _mouseLook.SetDefaultParams();
 
         public void DisableFlashlight() =>
             _flashlight.DisableInteractable();
@@ -57,13 +63,10 @@ namespace MiktoGames
         private void DisablePlayerMovement() =>
             _movement.Disable();
 
-        private void EnableMouseLock()
-        {
-            _mouseLook.SetCurrentRotaton();
+        public void EnableMouseLook() =>
             _mouseLook.enabled = true;
-        }
 
-        private void DisableMouseLock() =>
+        public void DisableMouseLook() =>
             _mouseLook.enabled = false;
     }
 }

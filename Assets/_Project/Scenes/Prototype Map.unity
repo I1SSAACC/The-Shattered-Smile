@@ -429,6 +429,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Locker
       objectReference: {fileID: 0}
+    - target: {fileID: 8453751431464271865, guid: 6a8317775c36ca940b664166af74afd3, type: 3}
+      propertyPath: _looksAroundSensitivity
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
