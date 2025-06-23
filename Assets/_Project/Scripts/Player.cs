@@ -10,7 +10,11 @@ namespace MiktoGames
         [SerializeField] private FootstepController _footstepController;
         [SerializeField] private FlashlightController _flashlight;
 
+        private bool _isHidden;
+
         public Transform CameraTransform => _mouseLook.CameraTransform;
+
+        public bool IsHidden => _isHidden;
 
         private void Update()
         {
@@ -37,6 +41,9 @@ namespace MiktoGames
 
         public void EnableFlashlight() =>
             _flashlight.EnableInteractable();
+
+        public void SetHiddenStatus(bool isHidden) =>
+            _isHidden = isHidden;
 
         private void EnableHeadBobbing() =>
             _headBobbing.enabled = true;
