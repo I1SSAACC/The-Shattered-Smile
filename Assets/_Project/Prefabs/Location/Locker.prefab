@@ -468,9 +468,6 @@ MonoBehaviour:
   _moveDuration: 0.2
   _fastMoveDuration: 0.2
   _timeWaitToMove: 0.2
-  _verticalLooksAround: {x: -10, y: 10}
-  _horizontalLooksAround: {x: 170, y: 190}
-  _looksAroundSensitivity: 0.3
   _entryStartTarget: {fileID: 8715384841226647361}
   _entryTarget: {fileID: 4468378470269186283}
   _exitTarget: {fileID: 6106789726417648690}
