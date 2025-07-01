@@ -8,7 +8,7 @@ namespace MiktoGames
         [SerializeField] private MouseLook _mouseLook;
         [SerializeField] private HeadBobbing _headBobbing;
         [SerializeField] private FootstepController _footstepController;
-        [SerializeField] private FlashlightController _flashlight;
+        [SerializeField] private Flashlight _flashlight;
 
         private bool _isHidden;
 
@@ -16,10 +16,14 @@ namespace MiktoGames
 
         public bool IsHidden => _isHidden;
 
-        private void Update()
+        private void OnEnable()
         {
-            if (_movement != null && _footstepController != null)
-                _footstepController.UpdateFootsteps(_movement.IsGrounded, _movement.MoveInput, _movement.IsSprinting, _movement.IsCrouching, false, Time.deltaTime);
+            InputReader.Instance.FlashlightPressed += OnFlashLightPressed;
+        }
+
+        private void OnDisable()
+        {
+            InputReader.Instance.FlashlightPressed -= OnFlashLightPressed;
         }
 
         public void EnableControl()
@@ -68,5 +72,8 @@ namespace MiktoGames
 
         public void DisableMouseLook() =>
             _mouseLook.enabled = false;
+
+        private void OnFlashLightPressed() =>
+            _flashlight.ToggleFlashlight();
     }
 }
