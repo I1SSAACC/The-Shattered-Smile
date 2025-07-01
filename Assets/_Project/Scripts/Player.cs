@@ -8,8 +8,7 @@ namespace MiktoGames
         [SerializeField] private MouseLook _mouseLook;
         [SerializeField] private HeadBobbing _headBobbing;
         [SerializeField] private FootstepController _footstepController;
-        [SerializeField] private FlashlightController _flashlight;
-        [SerializeField] private HeartbeatController _heartbeatController;
+        [SerializeField] private Flashlight _flashlight;
 
         private bool _isHidden;
 
@@ -17,35 +16,35 @@ namespace MiktoGames
 
         public bool IsHidden => _isHidden;
 
-        private void Update()
+        private void OnEnable()
         {
-            if (_movement != null && _footstepController != null)
-                _footstepController.UpdateFootsteps(_movement.IsGrounded, _movement.MoveInput, _movement.IsSprinting, _movement.IsCrouching, false, Time.deltaTime);
+            InputReader.Instance.FlashlightPressed += OnFlashLightPressed;
+        }
+
+        private void OnDisable()
+        {
+            InputReader.Instance.FlashlightPressed -= OnFlashLightPressed;
         }
 
         public void EnableControl()
         {
             EnableHeadBobbing();
             EnablePlayerMovement();
-<<<<<<< HEAD
             EnableMouseLook();
-            DisableHeartbeat();
-=======
-            EnableMouseLock();
->>>>>>> parent of df90564 (Добавлено вращение в ящике)
         }
 
         public void DisableControl()
         {
             DisableHeadBobbing();
             DisablePlayerMovement();
-<<<<<<< HEAD
             DisableMouseLook();
-            EnableHeartbeat();
-=======
-            DisableMouseLock();
->>>>>>> parent of df90564 (Добавлено вращение в ящике)
         }
+
+        public void SetTempParamsMouseLook(Vector2 verticalLimis, Vector2 horizontalLimits, float multiplierSensitivity) =>
+            _mouseLook.SetTempParams(verticalLimis, horizontalLimits, multiplierSensitivity);
+
+        public void SetDefaultMouseLook() =>
+             _mouseLook.SetDefaultParams();
 
         public void DisableFlashlight() =>
             _flashlight.DisableInteractable();
@@ -68,18 +67,13 @@ namespace MiktoGames
         private void DisablePlayerMovement() =>
             _movement.Disable();
 
-        private void EnableMouseLock()
-        {
-            _mouseLook.SetCurrentRotaton();
+        public void EnableMouseLook() =>
             _mouseLook.enabled = true;
-        }
 
-        private void DisableMouseLock() =>
+        public void DisableMouseLook() =>
             _mouseLook.enabled = false;
 
-        public void DisableHeartbeat() =>
-           _heartbeatController.enabled = false;
-        public void EnableHeartbeat() =>
-            _heartbeatController.enabled = true;
+        private void OnFlashLightPressed() =>
+            _flashlight.ToggleFlashlight();
     }
 }

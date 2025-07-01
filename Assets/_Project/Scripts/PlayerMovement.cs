@@ -29,7 +29,6 @@ namespace MiktoGames
         private float _originalHeight;
 
         [Header("Ground Settings")]
-        [SerializeField] private Transform _groundCheck;
         [SerializeField] private float _groundDistance = 0.3f;
         [SerializeField] private LayerMask _groundMask;
         [SerializeField] private float _coyoteTimeDuration = 0.25f;
@@ -82,7 +81,7 @@ namespace MiktoGames
 
         private void Update()
         {
-            _isGrounded = Physics.CheckSphere(_groundCheck.position, _groundDistance, _groundMask);
+            _isGrounded = Physics.CheckSphere(transform.position, _groundDistance, _groundMask);
 
             if (_isGrounded && _moveDirection.y < 0f)
             {
@@ -174,7 +173,7 @@ namespace MiktoGames
                 if (_hasJumped || fallDistance >= _fallLandingThreshold)
                 {
                     if (_footstepController != null)
-                        _footstepController.PlayLandingSound();
+                        _footstepController.PlayJumpLandSound();
                 }
                 _hasJumped = false;
                 _inFall = false;

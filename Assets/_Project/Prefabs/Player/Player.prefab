@@ -420,10 +420,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2922308556bc98e4898cb3309250e781, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputReader: {fileID: 0}
   _movement: {fileID: 7449898212710868227}
   _mouseLook: {fileID: 2863264213549521115}
   _headBobbing: {fileID: 8693810721681009742}
   _footstepController: {fileID: 5327331378509011910}
+  _flashlight: {fileID: 3604057579775968076}
 --- !u!114 &8403193533586442931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,6 +454,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mouseSensitivity: 10
   _lookYLimits: {x: -60, y: 70}
+  _lookXLimits: {x: -370, y: 370}
   _playerCamera: {fileID: 8107366510280723436}
 --- !u!114 &8693810721681009742
 MonoBehaviour:
@@ -608,13 +611,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959ab110b0f917d458f011980b8bd693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleKey: 102
-  flashlight: {fileID: 2689448680267953889}
-  baseIntensity: 1
-  smoothToggleDuration: 0.1
-  audioSource: {fileID: 2602804433206192812}
-  toggleOnSound: {fileID: 8300000, guid: fed70f276dd493c41b4b533f46fd82ac, type: 3}
-  toggleOffSound: {fileID: 8300000, guid: a25d8a88afa5685438da5f960f64a192, type: 3}
+  _flashlight: {fileID: 2689448680267953889}
+  _smoothToggleDuration: 0.1
   flickerMinIntensity: 0.8
   flickerMaxIntensity: 1
   flickerIntervalMin: 0.2

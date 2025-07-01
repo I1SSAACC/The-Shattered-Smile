@@ -1,88 +1,27 @@
 using System.Collections;
 using UnityEngine;
 
-public class FlashlightController : MonoBehaviour
+public class Flashlight : MonoBehaviour
 {
-    [Header("Toggle Settings")]
-    [SerializeField, Tooltip("Клавиша для включения/выключения фонарика")]
-    private KeyCode toggleKey = KeyCode.F;
+    [SerializeField] private Light _flashlight;
+    [SerializeField] private float _smoothToggleDuration = 0.1f;
+    [SerializeField] private Vector2 _flickerIntensity = new(0.8f, 1.0f);
+    [SerializeField] private Vector2 _flickerInterval = new(0.2f, 1.0f);
+    [SerializeField] private float _flickerDuration = 0.1f;
 
-    [Header("Light Settings")]
-    [SerializeField, Tooltip("Компонент Light, представляющий фонарик")]
-    private Light flashlight;
-    [SerializeField, Tooltip("Базовая интенсивность фонарика. Используется для расчёта мерцания и плавного включения")]
-    private float baseIntensity = 1f;
-    [SerializeField, Tooltip("Время плавного включения/выключения (в секундах)")]
-    private float smoothToggleDuration = 0.5f;
-
-    [Header("Audio Settings")]
-    [SerializeField, Tooltip("Источник звука для фонарика")]
-    private AudioSource audioSource;
-    [SerializeField, Tooltip("Звук при включении фонарика")]
-    private AudioClip toggleOnSound;
-    [SerializeField, Tooltip("Звук при выключении фонарика")]
-    private AudioClip toggleOffSound;
-
-    [Header("Flicker Settings")]
-    [SerializeField, Tooltip("Минимальный множитель интенсивности для мерцания (например, 0.8)")]
-    private float flickerMinIntensity = 0.8f;
-    [SerializeField, Tooltip("Максимальный множитель интенсивности для мерцания (например, 1.0)")]
-    private float flickerMaxIntensity = 1.0f;
-    [SerializeField, Tooltip("Минимальный интервал между мерцаниями (в секундах)")]
-    private float flickerIntervalMin = 0.2f;
-    [SerializeField, Tooltip("Максимальный интервал между мерцаниями (в секундах)")]
-    private float flickerIntervalMax = 1.0f;
-    [SerializeField, Tooltip("Длительность мерцания (в секундах)")]
-    private float flickerDuration = 0.1f;
-
-    // Флаг активности фонарика.
-    private bool isOn = false;
+    private float _baseIntensity;
+    private bool _isOn;
     private bool _isOnInteractable;
     private bool _isInteractable = true;
 
-    // Ссылки на корутины
-    private Coroutine flickerCoroutine;
-    private Coroutine toggleCoroutine;
+    private Coroutine _flickerCoroutine;
+    private Coroutine _toggleCoroutine;
 
     private void Awake()
     {
-        // Если не задан компонент Light, пытаемся получить его из этого объекта.
-        if (flashlight == null)
-            flashlight = GetComponent<Light>();
-
-        if (flashlight != null)
-        {
-            // Сохраняем базовую интенсивность
-            baseIntensity = flashlight.intensity;
-            // Изначально фонарик выключен и его интенсивность = 0
-            flashlight.intensity = 0f;
-            flashlight.enabled = false;
-        }
-
-        // Если AudioSource не указан, пробуем найти его на объекте.
-        if (audioSource == null)
-            audioSource = GetComponent<AudioSource>();
-    }
-
-    private void Update()
-    {
-        if (_isInteractable == false)
-            return;
-
-        // Переключаем фонарик по нажатию заданной клавиши.
-        if (Input.GetKeyDown(toggleKey))
-        {
-            ToggleFlashlight();
-        }
-    }
-
-    public void DisableInteractable()
-    {
-        _isOnInteractable = isOn;
-        _isInteractable = false;
-
-        if (isOn)
-            Disable();
+        _baseIntensity = _flashlight.intensity;
+        _flashlight.intensity = 0f;
+        _flashlight.enabled = false;
     }
 
     public void EnableInteractable()
@@ -93,18 +32,29 @@ public class FlashlightController : MonoBehaviour
             Enable();
     }
 
-    private void ToggleFlashlight()
+    public void DisableInteractable()
     {
-        isOn = !isOn;
+        _isOnInteractable = _isOn;
+        _isInteractable = false;
 
-        // Останавливаем ранее запущенную корутину переключения, если она активна.
-        if (toggleCoroutine != null)
+        if (_isOn)
+            Disable();
+    }
+
+    public void ToggleFlashlight()
+    {
+        if (_isInteractable == false)
+            return;
+
+        _isOn = !_isOn;
+
+        if (_toggleCoroutine != null)
         {
-            StopCoroutine(toggleCoroutine);
-            toggleCoroutine = null;
+            StopCoroutine(_toggleCoroutine);
+            _toggleCoroutine = null;
         }
 
-        if (isOn)
+        if (_isOn)
             Enable();
         else
             Disable();
@@ -112,83 +62,55 @@ public class FlashlightController : MonoBehaviour
 
     private void Enable()
     {
-        flashlight.enabled = true;
-        flashlight.intensity = 0f;
-
-        // Проигрываем звук включения (если настроен).
-        if (audioSource != null && toggleOnSound != null)
-            audioSource.PlayOneShot(toggleOnSound);
-
-        // Запускаем плавное включение.
-        toggleCoroutine = StartCoroutine(SmoothFadeIn());
+        _flashlight.enabled = true;
+        _flashlight.intensity = 0f;
+        _toggleCoroutine = StartCoroutine(StartFadeCoroutine(_flashlight.intensity, _baseIntensity));
+        SfxPlayer3D.Instance.PlayFlashlightEnable(transform);
     }
 
     private void Disable()
     {
-        // Выключение: проигрываем звук отключения (если настроен).
-        if (audioSource != null && toggleOffSound != null)
-            audioSource.PlayOneShot(toggleOffSound);
-
-        // Запускаем плавное выключение.
-        toggleCoroutine = StartCoroutine(SmoothFadeOut());
+        _toggleCoroutine = StartCoroutine(StartFadeCoroutine(_flashlight.intensity, 0));
+        SfxPlayer3D.Instance.PlayFlashlightDisable(transform);
     }
 
-    private IEnumerator SmoothFadeIn()
+    private IEnumerator StartFadeCoroutine(float startIntensity, float endItensity)
     {
-        // Если уже запущен эффект мерцания, останавливаем его на период перехода.
-        if (flickerCoroutine != null)
+        if (_flickerCoroutine != null)
         {
-            StopCoroutine(flickerCoroutine);
-            flickerCoroutine = null;
+            StopCoroutine(_flickerCoroutine);
+            _flickerCoroutine = null;
         }
 
         float elapsed = 0f;
-        while (elapsed < smoothToggleDuration)
+
+        while (elapsed < _smoothToggleDuration)
         {
             elapsed += Time.deltaTime;
-            flashlight.intensity = Mathf.Lerp(0f, baseIntensity, elapsed / smoothToggleDuration);
-            yield return null;
-        }
-        flashlight.intensity = baseIntensity;
-
-        // После плавного включения запускаем корутину мерцания.
-        flickerCoroutine = StartCoroutine(FlickerRoutine());
-    }
-
-    private IEnumerator SmoothFadeOut()
-    {
-        // Останавливаем эффект мерцания, если он работает.
-        if (flickerCoroutine != null)
-        {
-            StopCoroutine(flickerCoroutine);
-            flickerCoroutine = null;
-        }
-
-        float startIntensity = flashlight.intensity;
-        float elapsed = 0f;
-        while (elapsed < smoothToggleDuration)
-        {
-            elapsed += Time.deltaTime;
-            flashlight.intensity = Mathf.Lerp(startIntensity, 0f, elapsed / smoothToggleDuration);
+            _flashlight.intensity = Mathf.Lerp(startIntensity, endItensity, elapsed / _smoothToggleDuration);
             yield return null;
         }
 
-        flashlight.intensity = 0f;
-        flashlight.enabled = false;
+        _flashlight.intensity = endItensity;
+
+        if (endItensity == 0f)
+            _flashlight.enabled = false;
+        else
+            _flickerCoroutine = StartCoroutine(FlickerRoutine());
     }
 
     private IEnumerator FlickerRoutine()
     {
-        // Эффект мерцания: фонарик периодически слегка изменяет интенсивность.
-        while (isOn)
+        while (_isOn)
         {
-            float waitTime = Random.Range(flickerIntervalMin, flickerIntervalMax);
+            float waitTime = Random.Range(_flickerInterval.x, _flickerInterval.y);
             yield return new WaitForSeconds(waitTime);
 
-            float flickerIntensity = baseIntensity * Random.Range(flickerMinIntensity, flickerMaxIntensity);
-            flashlight.intensity = flickerIntensity;
-            yield return new WaitForSeconds(flickerDuration);
-            flashlight.intensity = baseIntensity;
+            float flickerIntensity = _baseIntensity * Random.Range(_flickerIntensity.x, _flickerIntensity.y);
+            _flashlight.intensity = flickerIntensity;
+            yield return new WaitForSeconds(_flickerDuration);
+
+            _flashlight.intensity = _baseIntensity;
         }
     }
 }
