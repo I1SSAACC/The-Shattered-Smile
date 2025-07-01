@@ -801,6 +801,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: caceea3cf407e1b47a4024a755887675, type: 3}
     - target: {fileID: 8156563781358893668, guid: e2f50a6b5c13d10418fa8da0319253a8, type: 3}
+      propertyPath: _flashlightDisable
+      value: 
+      objectReference: {fileID: 8300000, guid: 0cb1d5c8b6d2da84abc24e3a8a3dd635, type: 3}
+    - target: {fileID: 8156563781358893668, guid: e2f50a6b5c13d10418fa8da0319253a8, type: 3}
       propertyPath: _woodRunningFootsteps.Array.size
       value: 10
       objectReference: {fileID: 0}
@@ -1414,6 +1418,14 @@ PrefabInstance:
       propertyPath: _inputReader
       value: 
       objectReference: {fileID: 258331421}
+    - target: {fileID: 3604057579775968076, guid: eff221103b1ef32498eaa4f6682aacb8, type: 3}
+      propertyPath: _smoothToggleDuration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5327331378509011910, guid: eff221103b1ef32498eaa4f6682aacb8, type: 3}
+      propertyPath: _materialCheckDistance
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 5327331378509011910, guid: eff221103b1ef32498eaa4f6682aacb8, type: 3}
       propertyPath: _runningFootstepInterval
       value: 0.3

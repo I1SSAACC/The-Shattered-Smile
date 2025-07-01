@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public enum FootstepType
 {
@@ -37,7 +36,6 @@ public class SfxPlayer3D : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         InitializeFootstepDictionary();
         _pool = new(_prefab, transform, 200);

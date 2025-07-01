@@ -4,13 +4,11 @@ namespace MiktoGames
 {
     public class FootstepController : MonoBehaviour
     {
-        [SerializeField] private float _walkingFootstepInterval = 0.25f;        
-        [SerializeField] private float _runningFootstepInterval = 0.15f;        
-        [SerializeField] private float _materialCheckDistance = 1f;
-        [SerializeField] private LayerMask _groundMaterialMask;
+        [SerializeField] private float _walkingFootstepInterval = 0.5f;
+        [SerializeField] private float _runningFootstepInterval = 0.3f;
+        [SerializeField] private float _materialCheckDistance = 0.2f;
 
         private float _footstepTimer;
-        private bool _wasMoving;
 
         private bool IsGroundWood()
         {
@@ -30,48 +28,33 @@ namespace MiktoGames
         {
             bool isMoving = moveInput.sqrMagnitude > 0.01f;
 
-            if (!isMoving)
+            if (isMoving == false || effectiveBlocked || isCrouching || isGrounded == false)
             {
-                _footstepTimer = 0f;
-                _wasMoving = false;
-                return;
-            }
-
-            if (effectiveBlocked || isCrouching || !isGrounded)
-            {
-                _footstepTimer = 0f;
-                return;
-            }
-
-            if (isMoving && !_wasMoving)
-            {
-                PlayStepSound(isSprinting);
-                _footstepTimer = 0f;
-                _wasMoving = true;
+                ResetFootStepTimer();
                 return;
             }
 
             _footstepTimer += deltaTime;
             float interval = isSprinting ? _runningFootstepInterval : _walkingFootstepInterval;
+
             if (_footstepTimer >= interval)
             {
+                ResetFootStepTimer();
                 PlayStepSound(isSprinting);
-                _footstepTimer = 0f;
             }
         }
 
+        private void ResetFootStepTimer() =>
+            _footstepTimer = 0f;
+
         private void PlayStepSound(bool isSprinting)
         {
-            FootstepType footstepType = 0;
-
-            Debug.Log($"IsGroundWood: {IsGroundWood()}");
+            FootstepType footstepType;
 
             if (IsGroundWood())
-                if (isSprinting)
-                    footstepType = isSprinting ? FootstepType.WoodRunning : FootstepType.WoodWalking;
+                footstepType = isSprinting ? FootstepType.WoodRunning : FootstepType.WoodWalking;
             else
-                if (isSprinting)
-                    footstepType = isSprinting ? FootstepType.OrdinaryRunning : FootstepType.OrdinaryWalking;
+                footstepType = isSprinting ? FootstepType.OrdinaryRunning : FootstepType.OrdinaryWalking;
 
             SfxPlayer3D.Instance.PlayFootstep(footstepType, transform);
         }
