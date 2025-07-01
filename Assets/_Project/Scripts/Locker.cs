@@ -31,9 +31,9 @@ public class Locker : MonoBehaviour
     {
         player.DisableControl();
 
-        yield return StartCoroutine(Utils.MovePlayer(player.transform, _entryStartTarget, _fastMoveDuration));
-
         _lockerAnimator.PlayOpen();
+
+        yield return StartCoroutine(Utils.MovePlayer(player.transform, _entryStartTarget, _fastMoveDuration));
 
         yield return _waitToMove;
 
