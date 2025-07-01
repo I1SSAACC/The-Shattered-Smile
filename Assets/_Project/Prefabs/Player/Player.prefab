@@ -166,37 +166,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1 &2494367523741798938
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6017678324748456475}
-  m_Layer: 3
-  m_Name: GroundCheck
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6017678324748456475
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2494367523741798938}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1172159035235484606}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4630982937680967702
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,7 +347,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3653296039889087453}
-  - {fileID: 6017678324748456475}
   - {fileID: 1973552544172940584}
   - {fileID: 7898899124291708619}
   m_Father: {fileID: 0}
@@ -501,7 +469,6 @@ MonoBehaviour:
   _canCrouch: 1
   _fallMultiplier: 2.5
   _crouchHeight: 1
-  _groundCheck: {fileID: 6017678324748456475}
   _groundDistance: 0.3
   _groundMask:
     serializedVersion: 2
@@ -523,61 +490,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c95ff82880f78c43bfdaf59dfe9a490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkingAudioSource: {fileID: 1268277598898741582}
-  _walkingFootstepSounds:
-  - {fileID: 8300000, guid: 1f0199a4c6005ec4abbb302f71bc036d, type: 3}
-  - {fileID: 8300000, guid: 53e2adf2ac488ef46bb2b4074de9e363, type: 3}
-  - {fileID: 8300000, guid: a03a96c5d1e99b4409ddd79098abd9ab, type: 3}
-  - {fileID: 8300000, guid: 7187dc81f98b8be4eb97bfc4dd9a5abf, type: 3}
-  - {fileID: 8300000, guid: e3cfcb32689b274419ac73380ea96888, type: 3}
-  - {fileID: 8300000, guid: 314d37dfb74502a4094b835d0e0d6c23, type: 3}
-  - {fileID: 8300000, guid: f0f794c67e9233d468a38d165590d253, type: 3}
-  - {fileID: 8300000, guid: 1a7741daba5446e46a40f8074aae75dc, type: 3}
-  - {fileID: 8300000, guid: 0bc66974c41ff8c4fa15f46d21ad3548, type: 3}
-  _woodWalkingFootstepSounds:
-  - {fileID: 8300000, guid: 8e001351cd7065543a068386cde4c960, type: 3}
-  - {fileID: 8300000, guid: c41fb169b2991c247a5466e00faa6639, type: 3}
-  - {fileID: 8300000, guid: 76c66b3ae15685a45a334b0628d1edd1, type: 3}
-  - {fileID: 8300000, guid: cb9aa4db4b3a12147bf2fe3d88fee270, type: 3}
-  - {fileID: 8300000, guid: 2e832dbb2c7c9ba4e97fd3005fe850b7, type: 3}
-  - {fileID: 8300000, guid: 3af6e561e364a274aa306461461c386b, type: 3}
-  - {fileID: 8300000, guid: 30668cf6c5cbfef478b0812fc59eb646, type: 3}
-  - {fileID: 8300000, guid: eea9624d96ae191439615ca598fe01fa, type: 3}
-  - {fileID: 8300000, guid: a45bdfd5056ed1d4d8f667cc2498ca12, type: 3}
-  - {fileID: 8300000, guid: ec4bd5988d7de0c41ab2d9959705dd8b, type: 3}
-  _walkingFootstepInterval: 1
-  _runningAudioSource: {fileID: 7469097414495299478}
-  _runningFootstepSounds:
-  - {fileID: 8300000, guid: ecd647025e0a3c04fbd5829fff509e09, type: 3}
-  - {fileID: 8300000, guid: 3bd1b93317b7a3a49b13011cdaa64d0b, type: 3}
-  - {fileID: 8300000, guid: 7b4b6eb734482064c8c1e5fd45d4d76c, type: 3}
-  - {fileID: 8300000, guid: fba95cafa5bba8649a7d269656e7317b, type: 3}
-  - {fileID: 8300000, guid: e924ff5d774024542830602ee674d9a9, type: 3}
-  - {fileID: 8300000, guid: 281c105661e5ee14b8e76523200338bd, type: 3}
-  - {fileID: 8300000, guid: 3069c9f7e833f8e4099228c28f9d65dd, type: 3}
-  - {fileID: 8300000, guid: 82354d1fee336984994fbdcc8154c89c, type: 3}
-  - {fileID: 8300000, guid: 068414160a0ccf34ca0c11b55d43ffc8, type: 3}
-  - {fileID: 8300000, guid: 02d4b2dff380d194fab91c0864b0c386, type: 3}
-  _woodRunningFootstepSounds:
-  - {fileID: 8300000, guid: 505a015d5525e0442ae4a62d5bac304d, type: 3}
-  - {fileID: 8300000, guid: 7ffe843b3b9c8d14792d912d39646105, type: 3}
-  - {fileID: 8300000, guid: 2802b1a72217c464ea0171ad67e835f7, type: 3}
-  - {fileID: 8300000, guid: 88da42c7018c0fa41870ccf17d13da9c, type: 3}
-  - {fileID: 8300000, guid: 8b4e405a508185e428652ccc26469d53, type: 3}
-  - {fileID: 8300000, guid: cee4ef3ef0fd155409f7b5a5162cece8, type: 3}
-  - {fileID: 8300000, guid: b30822d7e7d412d459397d0749be742a, type: 3}
-  - {fileID: 8300000, guid: 7f31ac62883f78b4ba610e164f57f879, type: 3}
-  - {fileID: 8300000, guid: 2c37f11b2d56b374ebf354853c6ad643, type: 3}
-  - {fileID: 8300000, guid: 75d4e54cf94712d4e8de7ce385abceb2, type: 3}
-  _runningFootstepInterval: 0.7
-  _jumpStartSound: {fileID: 8300000, guid: caceea3cf407e1b47a4024a755887675, type: 3}
-  _jumpLandSound: {fileID: 8300000, guid: 1f080a1e65d584c4ca3e3c75fbb406b3, type: 3}
-  _jumpAudioSource: {fileID: 6679377661376485256}
-  _groundCheck: {fileID: 6017678324748456475}
-  _materialCheckDistance: 1
-  _groundMaterialMask:
-    serializedVersion: 2
-    m_Bits: 1
+  _walkingFootstepInterval: 0.5
+  _runningFootstepInterval: 0.3
+  _materialCheckDistance: 0.2
 --- !u!114 &385826257093578217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,12 +527,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _flashlight: {fileID: 2689448680267953889}
-  _smoothToggleDuration: 0.1
-  flickerMinIntensity: 0.8
-  flickerMaxIntensity: 1
-  flickerIntervalMin: 0.2
-  flickerIntervalMax: 1
-  flickerDuration: 0.1
+  _smoothToggleDuration: 0.25
+  _flickerIntensity: {x: 0.8, y: 1}
+  _flickerInterval: {x: 0.2, y: 1}
+  _flickerDuration: 0.1
 --- !u!1 &6862523026981334987
 GameObject:
   m_ObjectHideFlags: 0
