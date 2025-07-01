@@ -4,6 +4,7 @@ namespace MiktoGames
 {
     public class Player : MonoBehaviour
     {
+        [SerializeField] private InputReader _inputReader;
         [SerializeField] private PlayerMovement _movement;
         [SerializeField] private MouseLook _mouseLook;
         [SerializeField] private HeadBobbing _headBobbing;
@@ -18,12 +19,12 @@ namespace MiktoGames
 
         private void OnEnable()
         {
-            InputReader.Instance.FlashlightPressed += OnFlashLightPressed;
+            _inputReader.FlashlightPressed += OnFlashLightPressed;
         }
 
         private void OnDisable()
         {
-            InputReader.Instance.FlashlightPressed -= OnFlashLightPressed;
+            _inputReader.FlashlightPressed -= OnFlashLightPressed;
         }
 
         public void EnableControl()

@@ -15,7 +15,7 @@ public class Flashlight : MonoBehaviour
     private bool _isInteractable = true;
 
     private Coroutine _flickerCoroutine;
-    private Coroutine _toggleCoroutine;
+    private Coroutine _fadeCoroutine;
 
     private void Awake()
     {
@@ -43,16 +43,10 @@ public class Flashlight : MonoBehaviour
 
     public void ToggleFlashlight()
     {
-        if (_isInteractable == false)
+        if (_isInteractable == false || _fadeCoroutine != null)
             return;
 
         _isOn = !_isOn;
-
-        if (_toggleCoroutine != null)
-        {
-            StopCoroutine(_toggleCoroutine);
-            _toggleCoroutine = null;
-        }
 
         if (_isOn)
             Enable();
@@ -64,13 +58,13 @@ public class Flashlight : MonoBehaviour
     {
         _flashlight.enabled = true;
         _flashlight.intensity = 0f;
-        _toggleCoroutine = StartCoroutine(StartFadeCoroutine(_flashlight.intensity, _baseIntensity));
+        _fadeCoroutine = StartCoroutine(StartFadeCoroutine(_flashlight.intensity, _baseIntensity));
         SfxPlayer3D.Instance.PlayFlashlightEnable(transform);
     }
 
     private void Disable()
     {
-        _toggleCoroutine = StartCoroutine(StartFadeCoroutine(_flashlight.intensity, 0));
+        _fadeCoroutine = StartCoroutine(StartFadeCoroutine(_flashlight.intensity, 0));
         SfxPlayer3D.Instance.PlayFlashlightDisable(transform);
     }
 
@@ -97,6 +91,8 @@ public class Flashlight : MonoBehaviour
             _flashlight.enabled = false;
         else
             _flickerCoroutine = StartCoroutine(FlickerRoutine());
+
+        _fadeCoroutine = null;
     }
 
     private IEnumerator FlickerRoutine()
